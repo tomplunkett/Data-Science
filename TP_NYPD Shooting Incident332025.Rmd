@@ -1,0 +1,130 @@
+---
+title: "NYPD Shooting Incident Data Science Report"
+author: "Tom Plunkett"
+date: "2025-03-03"
+output:
+  pdf_document: default
+  html_document:
+    df_print: paged
+---
+
+## Introduction
+
+This data science project analyzes New York City Police Department Shooting Incident data from the period 2006 through 2023, aiming to understand how each borough's number of reported shooting incidents have changed over time on an annual basis.The analysis focuses on he Boroughs of New York City: Brooklyn, Queens, The Bronx, Manhattan, and Staten Island.
+
+## Data Ingestion and Data Cleansing
+
+I use the tidyverse and lubridate libraries.  I then import the csv file from New York City's open Data website at the URL below
+```{r}
+library(tidyverse)
+library(lubridate)
+
+url <- "https://data.cityofnewyork.us/api/views/833y-fsy8/rows.csv?accessType=DOWNLOAD"
+
+shootings <- read_csv(url)
+```
+
+I trim down to the data I will need for analysis to make the analysis perform faster. The columns I will need include the incident key, the date of the shooting incident, the borough, and the murder flag. The original data set had a lot of columns that I will not need.  I then group the data by date and borough, and finally tally the number of shooting incidents by year.
+```{r}
+by_boro <- shootings %>%
+  mutate(INCIDENT_KEY = as.character(INCIDENT_KEY),
+  OCCUR_DATE = mdy(OCCUR_DATE),
+  BORO = factor(BORO),
+  STATISTICAL_MURDER_FLAG = factor(STATISTICAL_MURDER_FLAG),)%>%
+  select(c(INCIDENT_KEY,BORO,OCCUR_DATE,STATISTICAL_MURDER_FLAG))
+```
+Next I create three more tables which are the boroughs grouped by daily, monthly, and yearly incidents
+```{r}
+by_boro_yearly <- by_boro %>%
+  group_by(BORO, year = floor_date(OCCUR_DATE, 'year'))%>%
+  tally(name = "INCIDENT_COUNT")
+```
+ I then take a look at the total number of shooting incidents within each of the Boro's in the next section. 
+
+
+## Annual Shooting Incident Analysis
+Grouping shooting incidents in the boroughs by total number of annual shootings. 
+
+The outputs of each model summary should provide us with clues about the shootings in the city and
+each bourough. The p-value of each model will determine if the passage of time is a statistically significant predictor of the number of shooting incidents in each borough.  Additionally, we can look at the model summary for the entire set to gain insight into the predictions for any given borough in the city.
+```{r}
+
+mod_total <- lm(INCIDENT_COUNT ~ year, data = by_boro_yearly)
+summary(mod_total)
+
+incidents_lm<-by_boro_yearly %>%
+  ungroup()%>%
+  mutate(pred = predict(mod_total))
+
+mod_bk <- lm(INCIDENT_COUNT ~ year, data = by_boro_yearly%>%filter(BORO == "BROOKLYN"))
+summary(mod_bk)
+
+incidents_lm_bk<-by_boro_yearly %>%
+  filter(BORO == "BROOKLYN") %>%
+  mutate(pred = predict(mod_bk))
+
+mod_queens <- lm(INCIDENT_COUNT ~ year, data = by_boro_yearly%>%filter(BORO == "QUEENS"))
+summary(mod_queens)
+
+incidents_lm_queens<-by_boro_yearly %>%
+  filter(BORO == "QUEENS") %>%
+  mutate(pred = predict(mod_queens))
+
+mod_bronx <- lm(INCIDENT_COUNT ~ year, data = by_boro_yearly%>%filter(BORO == "BRONX"))
+summary(mod_bronx)
+
+incidents_lm_bronx<-by_boro_yearly %>%
+  filter(BORO == "BRONX") %>%
+  mutate(pred = predict(mod_bronx))
+
+mod_mnht <- lm(INCIDENT_COUNT ~ year, data = by_boro_yearly%>%filter(BORO == "MANHATTAN"))
+summary(mod_mnht)
+
+incidents_lm_mnht<-by_boro_yearly %>%
+  filter(BORO == "MANHATTAN") %>%
+  mutate(pred = predict(mod_mnht))
+
+mod_si <- lm(INCIDENT_COUNT ~ year, data = by_boro_yearly%>%filter(BORO == "STATEN ISLAND"))
+summary(mod_si)
+
+incidents_lm_si<-by_boro_yearly %>%
+  filter(BORO == "STATEN ISLAND") %>%
+  mutate(pred = predict(mod_si))
+
+
+incidents_lm_total <- incidents_lm_bk %>%
+  rbind(incidents_lm_bronx)%>%
+  rbind(incidents_lm_queens)%>%
+  rbind(incidents_lm_mnht)%>%
+  rbind(incidents_lm_si)
+
+incidents_lm <- incidents_lm %>%
+  left_join(incidents_lm_total%>%select(lm_boro = "pred", BORO, year), by = c("BORO", "year"))
+```
+If the p-value is less than .05, we can say that there is a statistically significant linear relationship between the passage of time (increasing occurance date) and the total number of annual shootings in those boroughs.  Looking at the p-values, we can infer that the progression of year is a good predictor of number of yearly shooting incidents in Brooklyn. The models for every other borough and any given borough show us that the progression of years might not be a statistically significant predictor of the number of yearly incidents.
+
+Plotting this results in the following
+```{r}
+ggplot(incidents_lm, aes(x = year, y = INCIDENT_COUNT)) + geom_point(aes(color = BORO))+scale_x_date(date_labels = "%Y", date_breaks = "2 years")+geom_line(aes(color = BORO, x = year, y = lm_boro), size = 1)+ geom_line(aes(color = "Full", y = pred), size = 1)
+
+ggplot(incidents_lm, aes(x = year, y = INCIDENT_COUNT)) + geom_point(aes(color = BORO))+scale_x_date(date_labels = "%Y", date_breaks = "2 years")+geom_line(aes(color = BORO, x = year, y = lm_boro), size = 1)+ geom_line(aes(color = "Full", y = pred), size = 1)+ scale_y_log10()
+```
+
+We see a pretty prominent downward trend in the graphs for all of the boroughs except Manhattan.  The most prominent is for Brooklyn (the prominence of which is what generated the p value discussion in the paragraph above).
+
+The second plot transformed the y axis to a log scale. Compared to the initial plot, the log scale provides us a visual comparision of the percentage change of each borough as the years pass. It is much clearer through this plot that the rate of decline for Brooklyn, The Bronx, and Staten island are comparable while Queens and Manhattan show
+greater stagnation.
+
+
+## Bias
+Bias can have impacted my data science project in several different ways.  
+
+First, the data set covers reported shooting incidents across one of the largest cities in the world. This data was not collected and collated by one person.  Therefore, the different people assembling the data set might have followed different approaches, allowing bias to creep into the original data set.
+
+Second, my data cleansing could have allowed bias to further modify the original data set.
+
+Third, my choice of models and visualizations may also have allowed bias to enter the project.
+
+## Conclusion
+
+This analysis reveals that reported shooting incidents in New York City are trending downwards on an annual basis in Brooklyn in a statistically significant manner in the period between 2006 and 2023.  The other boroughs, except for Manhattan, also appear to be trending down, although perhaps not enough to be statistically significant.  
