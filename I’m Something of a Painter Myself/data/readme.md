@@ -1,1 +1,1 @@
-Data files in this directory
+Data files downloadable from the Kaggle site
