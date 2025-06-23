@@ -1,4 +1,4 @@
-Directory for Patents Unsupervised Learning project
+Directory for Unsupervised Learning project analyzing Cannbinoid Edibles Patent Document Dataset
 
 YouTube Video (13 minutes) describing project at https://youtu.be/halmnYC5WQY 
 
