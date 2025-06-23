@@ -2,6 +2,8 @@ Directory for Unsupervised Learning project analyzing Cannbinoid Edibles Patent 
 
 YouTube Video (13 minutes) describing project at https://youtu.be/halmnYC5WQY 
 
+Slides for video Cannabis Patent Classification with Unsupervised Learning.pdf
+
 Jupyter notebook for Unsupervised Learning project using NMF to analyze Cannabinoid Edibles Patent Document Dataset cannabinoid_edibles_NMF.ipynb  
 
 Dataset located at: https://github.com/swh/classification-gold-standard
