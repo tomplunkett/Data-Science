@@ -1,18 +1,16 @@
 Free AI Courses
 
 Foundations of AI & Machine Learning
-These courses provide a solid understanding of core AI and machine learning concepts.
 
-Harvard's Introduction to AI with Python: Learn the fundamentals of artificial intelligence and how to implement machine learning concepts using Python.
+Harvard's CS50 Introduction to AI with Python: Learn the fundamentals of artificial intelligence and how to implement machine learning concepts using Python.
 
-https://lnkd.in/eu4mZaAG
+https://pll.harvard.edu/course/cs50s-introduction-artificial-intelligence-python
 
 Harvard's Data Science: Machine Learning: Dive into training data, predictive relationships, and even learn to build a movie recommendation system.
 
-https://lnkd.in/eX28syMJ
+https://pll.harvard.edu/course/data-science-machine-learning
 
 Generative AI Essentials
-Understand what Generative AI is, how it works, and its diverse applications.
 
 Google's Introduction to Generative AI: Explore the basics of Generative AI, its applications, and how it differs from traditional machine learning.
 
@@ -39,7 +37,6 @@ Generative AI Explained (NVIDIA): A fast, clear, and digestible course covering 
 https://lnkd.in/g4yNPvgK
 
 Prompt Engineering & LLM Application Development
-Master the art of crafting effective prompts and building applications with large language models.
 
 Foundations of Prompt Engineering: From basic to advanced prompt techniques, this course covers it all.
 
@@ -66,7 +63,6 @@ How to build LLM apps that can see Heart Speak!
 https://bit.ly/46ACTS8
 
 AI Agents & Advanced Development
-Explore the cutting-edge of AI with courses on building intelligent agents.
 
 AI Agents for Beginners: An 11-lesson GitHub-based course covering agents, RAG, memory, and multi-agent systems, teaching real-world workflows with actual code. Ideal for developers and researchers starting from scratch.
 
@@ -88,8 +84,7 @@ Learn generative AI by Amazon Web Services (AWS): Designed for developers seekin
 
 https://lnkd.in/gG8Gvqnq
 
-Responsible AI & Strategy
-Learn about the ethical considerations and strategic implementation of AI.
+Responsible AI, Ethics, & Strategy
 
 Google's Introduction to Responsible AI: Discover what Responsible AI is, its importance, and how Google implements it in their products.
 
