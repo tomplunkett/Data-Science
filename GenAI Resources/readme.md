@@ -1,5 +1,4 @@
-Boost Your Skills with These Free AI Courses!
-Whether you're new to AI or looking to specialize, these free courses offer a fantastic way to learn.
+Free AI Courses
 
 Foundations of AI & Machine Learning
 These courses provide a solid understanding of core AI and machine learning concepts.
@@ -77,7 +76,7 @@ Hugging Face Agents Course: An interactive training focusing on building with La
 
 https://lnkd.in/gvkBA2vX
 
-Intro to Vibe coding🚀: A free 4-week course where you'll master "vibe coding" — describing your idea and letting AI help you build a working app.
+Intro to Vibe coding: A free 4-week course where you'll master "vibe coding" — describing your idea and letting AI help you build a working app.
 
 https://bit.ly/46wv7Mq
 
